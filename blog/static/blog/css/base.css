@@ -1,0 +1,43 @@
+.wmd-preview{
+    display: none;
+}
+body{
+    font-family: 'Tunga','serif';
+}
+
+.wmd-panel{
+    margin-right: 2px !important;
+    margin-left: 0px !important;
+    padding: 12px;
+    padding-left: 0px;
+}
+
+.comment-reply{
+    display: none;
+}
+
+.image_width {
+     width:  100px;
+ }
+.image_comment{
+    width: 100px;
+}
+
+.card-background-color{
+    background: #cbcece;
+}
+ /*style="height: 200px;width: auto"*/
+.card-image-size {
+    height: 200%;
+    width: auto ;
+
+}
+
+.nav-bar-color{
+    background: #d03116;
+}
+
+.image-top{
+    height: 400px;
+    width: auto;
+}

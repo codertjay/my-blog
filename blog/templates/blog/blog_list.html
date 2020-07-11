@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+
+{% block title %} blog home page{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-8 max-auto offset-2 ">
+        <form action="" method="GET"  >
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="search"
+                 aria-label="search" aria-describedby="basic-addon2" name="q"
+          value="{{ request.GET.q }}">
+                <button class="btn btn-outline-info"><i class="fa fa-search"></i></button>
+
+        </div>
+        </form>
+        </div>
+</div>
+    <div class="row mt-5 p-2">
+
+
+    {% for file in object_list  %}
+
+    <div class="col-md-5 col-xl-4 color-8 col-lg-4 col-sm-8 mx-auto offset-sm-2 " >
+     <div class="card mb-3 " style="background:#f3efef;">
+          <img class="card-img-top p-2 img-thumbnail" style="height: 200px;width: auto" src="{{ file.imageURL }}" {% comment %}alt="Card image cap"{% endcomment %}>
+          <div class="card-body">
+            <h5 class="card-title">{{ file.title }}</h5>
+
+            <p class=" post-detail-item">{{ file.get_markdown|truncatechars_html:10 }}</p>
+            <p class="card-text"><small class="text-muted">{{ file.get_category_display }}</small></p>
+              <a href="{{ file.get_absolute_url }}" class="btn btn-outline-primary">.more</a>
+              <a href="{% url 'blog_user_list' file.user %}" class="btn btn-outline-primary">{{ file.user.username }}</a>
+
+      </div>
+    </div>
+
+
+ </div>
+
+    {% endfor %}
+    </div>
+
+{% endblock content %}

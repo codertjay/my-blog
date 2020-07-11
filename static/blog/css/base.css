@@ -1,0 +1,20 @@
+/*.wmd-preview{*/
+/*    display: none;*/
+/*}*/
+.wmd-panel{
+    margin-right: 2px !important;
+    margin-left: 0px !important;
+    padding: 12px;
+    padding-left: 0px;
+}
+
+.comment-reply{
+    display: none;
+}
+
+.image_width {
+     width:  100px;
+ }
+.image_comment{
+    width: 100px;
+}

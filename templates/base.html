@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+   <title>{% block title %} {% endblock title %}</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+ <script src="{% static 'blog/js/all.min.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'blog/css/base.css' %}">
+
+        {% block head_extra %}
+        {% endblock head_extra %}
+</head>
+
+<body>
+
+
+
+{% include 'navbar.html' %}
+
+<section class="" style="background:#efeeee;" >
+<div class="pt-5 my-2">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+    {% endif %}
+    </div>
+
+<div class="container ">
+
+    {% block content %}
+
+    {% endblock content %}
+    {% block extra_body %}
+
+    {% endblock %}
+
+</div>
+</section>
+
+
+
+
+
+
+
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{% static 'blog/js/jquery-3.5.1.js'%}"></script>
+  <!-- Bootstrap tooltips -->
+  <!-- Bootstrap core JavaScript -->
+  <script  src="{% static 'blog/js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <!-- Bootstrap core JavaScript -->
+  <script  src="{% static 'blog/js/wow.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+
+
+<script src="{% static 'blog/js/marked.min.js' %}"></script>
+
+ <script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".content-markdown").each(function () {
+            var content = $(this).text()
+            console.log (content)
+            var markedContent = marked(content)
+            console.log (markedContent)
+            $(this).html(markedContent)
+    })
+        $(".post-detail-item img").each(function () {
+            $(this).addClass("img-responsive")
+    })
+
+
+
+})
+
+
+     $(document).keyup(function () {
+         var titleInput =  $("#id_title");
+         $("#preview-title").text(titleInput.val())
+
+         function setTitle (value) {
+             $('#preview-title').text(value)
+         }
+
+         titleInput.keyup(function () {
+            var myTitle = $(this).val()
+             setTitle(myTitle)
+
+         })
+
+         {% comment %} in here we first marked the content
+         then we use do html  {% endcomment %}
+         var descrpitonInput =  $("#wmd-input-id_description");
+         console.log (descrpitonInput)
+
+         function setContent (value) {
+            var markedContent = marked(value)
+         $("#preview-description").html(markedContent)
+         $("#preview-description img").each(function () {
+                $(this).addClass('img-responsive')
+         })
+         }
+
+         setContent(descrpitonInput.val())
+
+         descrpitonInput.keyup(function () {
+             var newContent = $(this).val()
+             setContent(newContent)
+             console.log ($(this).val())
+         })
+
+
+})
+
+
+</script>
+
+{% block script %} {% endblock %}
+
+</body>
+
+</html>

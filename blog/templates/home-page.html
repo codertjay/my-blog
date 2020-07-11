@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block title %}
+Home page
+{% endblock %}
+
+{% block content %}
+<body>
+
+  <!--Main layout-->
+  <main class="">
+    <div class="container">
+    <div class="jumbotron">
+      <h1 class="display-4">Welcome to Primebg!</h1>
+      <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+      <hr class="my-4">
+      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+      <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    </div>
+
+
+
+      <hr class="my-5">
+
+      <!--Section: Cards-->
+      <section class="text-center">
+
+        <!--Grid row-->
+        <div class="row mb-4 wow fadeIn">
+
+{% for post in posts %}
+
+    <div class="col-md-5 col-xl-4 color-8 col-lg-4 col-sm-8 mx-auto offset-sm-2  " >
+     <div class="card mb-3 " style="background:#f3efef;">
+         <a href="{{ post.get_absolute_url  }}">
+          <img class="card-img-top p-2 img-thumbnail" style="height: 200px;width: auto" src="{{ post.imageURL }}">
+         </a>
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+
+            <p class=" post-detail-item">{{ post.get_markdown|truncatechars_html:10 }}</p>
+            <p class="card-text"><small class="text-muted">{{ file.get_category_display }}</small></p>
+              <a href="{{ post.get_absolute_url }}" class="btn btn-outline-primary">.more</a>
+              <a href="{% url 'blog_user_list' post.user %}" class="btn btn-outline-primary">{{ post.user.username }}</a>
+
+      </div>
+    </div>
+
+
+ </div>
+     <!--Grid column-->
+  {% endfor %}
+          <!--Grid column-->
+          <div class="col-lg-4 col-md-6 mb-4">
+
+            <!--Card-->
+            <div class="card">
+
+              <!--Card image-->
+              <div class="view overlay">
+                <img src="{% static 'blog/img/blog/single_blog_2.png' %}" class="card-img-top" alt="">
+                <a href="https://mdbootstrap.com/education/tech-marketing/web-push-introduction/" target="_blank">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+
+              <!--Card content-->
+              <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title">Push notifications</h4>
+                <!--Text-->
+                <p class="card-text">Push messaging provides a simple and effective way to re-engage with your users
+                  and in this
+                  tutorial you'll learn how to add push notifications to your web app</p>
+                <a href="https://mdbootstrap.com/education/tech-marketing/web-push-introduction/" target="_blank" class="btn btn-primary btn-md">Start
+                  tutorial
+                  <i class="fas fa-play ml-2"></i>
+                </a>
+              </div>
+
+            </div>
+            <!--/.Card-->
+
+          </div>
+          <!--Grid column-->
+
+        </div>
+        <!--Grid row-->
+
+
+        <!--Grid row-->
+        <div class="row mb-4 wow fadeIn">
+
+          <!--Grid column-->
+          <div class="col-lg-4 col-md-12 mb-4">
+
+            <!--Card-->
+            <div class="card">
+
+              <!--Card image-->
+              <div class="view overlay">
+                <img src="{% static 'blog/img/blog/single_blog_3.png' %}" class="card-img-top"
+                  alt="">
+                <a href="https://mdbootstrap.com/angular/" target="_blank">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+
+              <!--Card content-->
+              <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title">MDB with Angular</h4>
+                <!--Text-->
+                <p class="card-text">Built with Angular 5, Bootstrap 4 and TypeScript. CLI version available. </p>
+                <a href="https://mdbootstrap.com/angular/" target="_blank" class="btn btn-primary btn-md">Free download
+                  <i class="fas fa-download ml-2"></i>
+                </a>
+              </div>
+
+            </div>
+            <!--/.Card-->
+
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-lg-4 col-md-6 mb-4">
+
+            <!--Card-->
+            <div class="card">
+
+              <!--Card image-->
+              <div class="view overlay">
+                <img src="{% static 'blog/img/blog/single_blog_4.png' %}" class="card-img-top" alt="">
+                <a href="https://mdbootstrap.com/react/" target="_blank">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+
+              <!--Card content-->
+              <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title">MDB with React</h4>
+                <!--Text-->
+                <p class="card-text">Based on the latest Bootstrap 4 and React 16. </p>
+                <a href="https://mdbootstrap.com/react/" target="_blank" class="btn btn-primary btn-md">Free download
+                  <i class="fas fa-download ml-2"></i>
+                </a>
+              </div>
+
+            </div>
+            <!--/.Card-->
+
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-lg-4 col-md-6 mb-4">
+
+            <!--Card-->
+            <div class="card">
+
+              <!--Card image-->
+              <div class="view overlay">
+                <img src="{% static 'blog/img/blog/single_blog_5.png' %}" class="card-img-top" alt="">
+                <a href="https://mdbootstrap.com/vue/" target="_blank">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+
+              <!--Card content-->
+              <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title">MDB with Vue</h4>
+                <!--Text-->
+                <p class="card-text">Based on the latest Bootstrap 4 and Vue 2.5.7. </p>
+                <a href="https://mdbootstrap.com/vue/" target="_blank" class="btn btn-primary btn-md">Free download
+                  <i class="fas fa-download ml-2"></i>
+                </a>
+              </div>
+
+            </div>
+            <!--/.Card-->
+
+          </div>
+          <!--Grid column-->
+
+        </div>
+        <!--Grid row-->
+
+      </section>
+      <!--Section: Cards-->
+
+    </div>
+  </main>
+  <!--Main layout-->
+</body>
+
+{% endblock %}

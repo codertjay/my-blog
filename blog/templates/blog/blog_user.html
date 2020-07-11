@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block title %} blog home page{% endblock title %}
+
+{% block content %}
+
+    <div class="row mt-5 p-2">
+    {% for file in object_list %}
+
+<div class="col-md-3 col-lg-5 col-sm-8">
+<div class="card mb-3">
+  <img class="card-img-top" src="{{ file.imageURL }}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{ file.title }}</h5>
+
+    <p class="content-markdown">{{ file.description|linebreaks|truncatechars:30 }}</p>
+    <p class="card-text"><small class="text-muted">{{ file.get_category_display }}</small></p>
+      <a href="{{ file.get_absolute_url }}" class="btn btn-outline-primary">.more</a>
+
+
+  </div>
+</div>
+
+
+ </div>
+
+    {% endfor %}
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+Delete Post
+{% endblock %}
+
+{% block content %}
+
+        <div class="row pt-5 mt-5">
+        <div class="col-8 offset-2 ">
+            <h1>Would you like to delete ?</h1>
+            <h2>{{ post }}</h2>
+
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-secondary" >Delete Post</button>
+            </form>
+            <a href="{{ post.get_absolute_url }}" class="btn btn-primary">
+                Post Detail
+            </a>
+
+        </div>
+    </div>
+
+
+
+{% endblock %}

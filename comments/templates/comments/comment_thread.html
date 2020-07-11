@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+
+{% block title %}
+    comment thread page
+{% endblock title %}
+
+{% block content %}
+  <!--Main layout-->
+  <main class=" pt-5">
+    <div class="container">
+
+      <!--Section: Post-->
+      <section class="">
+
+        <!--Grid row-->
+        <div class="row justify-content-center">
+
+          <!--Grid column-->
+          <div class="col-md-8 mb-4">
+              <!--Card content-->
+              <div class="card-body mx-auto">
+              <div class="img-fluid card-img bg-white border-danger  ">
+              <img class="card-img-top p-2 img-thumbnail image-top" src="{{ object.user.profile.imageURL }}">
+              </div>
+              <h3 class="card-header font-weight-bold">{{ object.content }}</h3>
+              <div class="card-header font-weight-bold">{{ object.comments.count}}| Comments</div>
+
+             <footer class="blockquote-footer"><cite title="Source Title">{{ object.timestamp|timesince }} ago by
+                 {{ object.user.username }}
+              {% if object.children.count > 0 %}{{ object.children.count }}
+                   | comment{% if  object.children.count > 1  %}s{% endif %}
+              {% endif %}
+             {% if object.user == request.user %}
+               <a href="{% url 'comments:comment_delete' object.id%}" class="float-right btn  btn-outline-danger mb-4">Delete thread</a>
+             {% endif %}
+                 <hr>
+             </cite>
+             </footer>
+                    </div>
+                </div>
+              {% comment %} list of comments replies {% endcomment %}
+
+              <div class="col-md-8 mt-4 mx-auto">
+             {% if object.children %}
+                 <hr>
+                  <h5 class="font-italic float-left">Reply to {{ object.user.username }}</h5>
+                 <br>
+              {% endif  %}
+
+                  {% for child_comment in object.children %}
+                         <div class="media d-block d-md-flex mt-3">
+                          <img class="d-flex mb-3 mx-auto z-depth-1 image_width rounded-circle "
+                               src="{{ child_comment.user.profile.imageURL }}"
+                            alt="Generic placeholder image" >
+                          <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                            <h5 class="mt-0 font-weight-bold"> {{ child_comment.user|upper}}
+                            </h5>
+                              <div class="text-muted">
+                            {{ child_comment.content|linebreaks  }}</div>
+                          </div>
+                      <footer class="blockquote-footer float-right"><cite title="Source Title">{{ child_comment.timestamp|timesince }} ago</cite></footer>
+                         {% if child_comment.user == request.user %}
+                           <a href="{% url 'comments:comment_delete' child_comment.id%}" class=" ml-2 float-right btn  btn-outline-danger mb-4">Delete</a>
+                         {% endif %}
+                        </div>
+                      <hr>
+                      <hr>
+
+                  {% endfor %}
+              {% comment %} end of comment replies {% endcomment %}
+
+
+              {% comment %} beginning  reply form {% endcomment %}
+              <div class=" card col-8  offset-2  ">
+                <form action="."  method="POST" class="form-group card-body ">
+                    {% csrf_token %}
+                  <!-- Reply -->
+                  <div class="form-group">
+                    <label for="font-weight-bolder font-italic display-3 " class="card-title">Your Reply</label>
+                      {{ form|crispy }}
+                  <input type="hidden" name="parent_id" value="{{ object.id }}">
+                  </div>
+                  <div class="text-center ">
+                      {% if request.user.is_authenticated %}
+                    <button class="btn btn-outline-info  float-right  " value="blog post" type="submit">Reply</button>
+                      {% else %}
+                          <a href="{% url 'account_login' %}" class="btn btn-outline-info float-right  ml-4">login</a>
+                          <a href="{% url 'account_signup' %}"  class="btn btn-outline-primary float-right ml-4">Signup</a>
+                      {% endif %}
+                  </div>
+                </form>
+              </div>
+              {% comment %} end of comment reply form {% endcomment %}
+
+    </div>
+  </div>
+          {% comment %} end of all the comments {% endcomment %}
+
+
+
+
+  </section>
+      <!--Section: Post-->
+
+    </div>
+  </main>
+  <!--Main layout-->
+
+
+
+
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'blog/js/my_javascript.js' %}"></script>
+{% endblock %}

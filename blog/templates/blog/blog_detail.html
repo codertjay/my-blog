@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+
+{% block title %} blog detail page{% endblock title %}
+
+{% block content %}
+  <!--Main layout-->
+  <main class="mt-5 pt-5">
+    <div class="container">
+
+      <!--Section: Post-->
+      <section class="text-body">
+
+        <!--Grid row-->
+        <div class="row">
+
+          <!--Grid column-->
+          <div class="col-md-8 mb-4">
+
+            <!--Featured Image-->
+            <div class="card mb-4 wow fadeIn">
+
+              <img src="{{ post.imageURL}}" class="img-fluid img-responsive p-3 border-info " alt="">
+                <div class="col-12">
+                    <form action="#" method="POST">
+                        <input type="hidden" name="like" id="id_like" value="1">
+                       <button href="#" class="btn-outline-primary   m-3 "  id="like" >0 Likes</button>
+                    </form>
+                    <form action="#" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="unlike" id="id_unlike" value="1">
+                        <button href="#"  class="btn-outline-primary     m-3"  id="unlike" >0 Unlike</button>
+                    </form>
+                </div>
+
+            </div>
+            <!--/.Featured Image-->
+
+            <!--post detail -->
+            <div class="card mb-4 wow fadeIn">
+
+              <!--Card content-->
+              <div class="card-body">
+
+
+                <p class="display-4 my-4 mx-auto col-8">{{ post.title }} </p>
+                  <hr>created on {{ post.published_date }}
+                  <hr>
+
+
+                <blockquote class="blockquote">
+                  <footer class="blockquote-footer"> by
+                    <cite title="Source Title">{{ post.user.username}}</cite>
+                      <span>{{ post.read_time }} min read
+                      </span>
+                  </footer>
+                </blockquote>
+
+
+                <p class="align-items-center text-body post-detail-item " >
+                    {{ post.get_markdown }}.</p>
+
+              </div>
+
+            </div>
+            <!--/.post detail -->
+
+
+            <!--Reply-->
+            <div class="card mb-3 wow fadeIn">
+              <div class="card-header font-weight-bold">Leave a reply</div>
+              <div class="card-body">
+
+                <!-- Default form reply -->
+                <form action="{% url 'blog:blog_comment' post.slug %}"  method="POST">
+                    {% csrf_token %}
+                  <!-- Comment -->
+                  <div class="form-group">
+                    <label for="replyFormComment">Your comment</label>
+                      {{ form|crispy }}
+                  </div>
+                  <div class="text-center mt-4">
+                    <button class="btn btn-info btn-md float-right  " value="blog post" type="submit">Comment</button>
+                  </div>
+                </form>
+                <!-- Default form reply -->
+
+              </div>
+            </div>
+            <!--/.Reply-->
+
+            <!--list of comments-->
+            <div class="card mb-4 wow fadeIn">
+
+              <div class="card-header font-weight-bold">
+                <span>About author</span>
+                <span class="pull-right">
+                  <a href="">
+                    <i class="fab fa-facebook-f mr-2"></i>
+                  </a>
+                  <a href="">
+                    <i class="fab fa-twitter mr-2"></i>
+                  </a>
+                  <a href="">
+                    <i class="fab fa-instagram mr-2"></i>
+                  </a>
+                  <a href="">
+                    <i class="fab fa-linkedin-in mr-2"></i>
+                  </a>
+                </span>
+              </div>
+
+              <div class="card-header font-weight-bold">{{ post.comments.count}}| Comments</div>
+
+                {% for post_comment in post.comments %}
+              <!--Card content-->
+
+              <div class="card-body">
+
+                <div class="media d-block d-md-flex mt-3">
+                  <img class="d-flex mb-3 mx-auto z-depth-1  image_width"  src="{{ post_comment.user.profile.imageURL }}"
+                    alt="Generic placeholder image" >
+                  <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                    <h5 class="mt-0 font-weight-bold"> {{ post_comment.user|upper}}
+                    </h5>
+                    {{ post_comment.content|linebreaks  }}
+                  </div>
+
+                        <br>
+                     <footer class="blockquote-footer float-right"><cite title="Source Title">{{ post_comment.timestamp|timesince }} ago |
+                      {% if post_comment.children.count > 0 %}{{ post_comment.children.count }}
+                           comment{% if  post_comment.children.count > 1  %}s{% endif %}
+                      {% endif %}
+
+                     </cite></footer>
+                        <br>
+                    <div class="float-right ">
+                        <hr>
+                        <a href="#" class="btn btn-primary comment-reply-btn ml-0">Reply</a>
+                        <a href="{{ post_comment.get_absolute_url }}" class="btn btn-outline-info mr-3"> Thread</a>
+                        <hr>
+                    </div>
+
+                </div>
+
+              {% comment %} list of comments replies {% endcomment %}
+              <div class="comment-reply ">
+
+                  {% for child_comment in post_comment.children %}
+                      {% if child_comment %}
+                          <div>
+                              <hr>
+                          <h5 class="font-italic float-left">Reply to {{ child_comment.user }}</h5>
+                              <hr>
+                          </div>
+                      {% endif  %}
+                         <div class="media d-block d-md-flex mt-3">
+                          <img class="d-flex mb-3 mx-auto z-depth-1 image_width "  src="{{ child_comment.user.profile.imageURL }}"
+                            alt="Generic placeholder image" >
+                          <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                            <h5 class="mt-0 font-weight-bold"> {{ child_comment.user|upper}}
+                            </h5>
+                            {{ child_comment.content|linebreaks  }}
+                          </div>
+                      <footer class="blockquote-footer"><cite title="Source Title">{{ child_comment.timestamp|timesince }} ago</cite></footer>
+                        </div>
+                      <hr>
+                  {% endfor %}
+              {% comment %} end of comment replies {% endcomment %}
+
+
+              {% comment %} beginning  reply form {% endcomment %}
+              <div class="col-6">
+                <form action="{% url 'blog:blog_comment' post.slug %}"  method="POST">
+                    {% csrf_token %}
+                  <!-- Reply -->
+                  <div class="form-group">
+                    <label for="replyFormComment">Your Reply</label>
+                      {{ form|crispy }}
+                  <input type="hidden" name="parent_id" value="{{ post_comment.id }}">
+                  </div>
+                  <div class="text-center mt-4">
+                    <button class="btn btn-outline-info btn-md  " value="blog post" type="submit">Reply</button>
+                  </div>
+                </form>
+              </div>
+              {% comment %} end of comment reply form {% endcomment %}
+
+              </div>
+              {% comment %} end of fade toggle {% endcomment %}
+
+                </div>
+                {% endfor %}
+          {% comment %} end of all the comments {% endcomment %}
+
+
+
+            </div>
+            <!--/.list of comments-->
+
+
+          </div>
+          <!--Grid column-->
+
+
+
+          <!--Grid column-->
+          <div class="col-md-4 mb-4">
+
+
+            <!--Card : Dynamic content wrapper-->
+            <div class="card mb-4 text-center wow fadeIn">
+
+              <div class="card-header">Do you want to get informed about new articles?</div>
+
+              <!--Card content-->
+              <div class="card-body">
+
+                <!-- Default form login -->
+                <form>
+
+                  <!-- Default input email -->
+                  <label for="defaultFormEmailEx" class="grey-text">Your email</label>
+                  <input type="email" id="defaultFormLoginEmailEx" class="form-control">
+
+                  <br>
+
+                  <!-- Default input password -->
+                  <label for="defaultFormNameEx" class="grey-text">Your name</label>
+                  <input type="text" id="defaultFormNameEx" class="form-control">
+
+                  <div class="text-center mt-4">
+                    <button class="btn btn-info btn-md" type="submit">Sign up</button>
+                  </div>
+                </form>
+                <!-- Default form login -->
+
+              </div>
+
+            </div>
+            <!--/.Card : Dynamic content wrapper-->
+
+            <!--Card-->
+            <div class="card mb-4 wow fadeIn">
+
+              <div class="card-header">Related articles</div>
+
+              <!--Card content-->
+              <div class="card-body">
+
+                <ul class="list-unstyled">
+                  <li class="media my-4">
+                      <div><img class="card-img p-2" src="{% static 'blog/img/instagram/2.png' %}" alt="An image"></div>
+                    <div class="media-body">
+                      <a href="">
+                        <h5 class="mt-0 mb-1 font-weight-bold">List-based media object</h5>
+                      </a>
+                      Cras sit amet nibh libero, in gravida nulla (...)
+                    </div>
+                  </li>
+                </ul>
+
+              </div>
+
+            </div>
+            <!--/.Card-->
+
+          </div>
+          <!--Grid column-->
+
+        </div>
+        <!--Grid row-->
+
+      </section>
+      <!--Section: Post-->
+
+    </div>
+  </main>
+  <!--Main layout-->
+
+
+
+
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'blog/js/my_javascript.js' %}"></script>
+{% endblock %}
